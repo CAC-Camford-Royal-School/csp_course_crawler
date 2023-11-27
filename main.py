@@ -3,6 +3,21 @@ import re
 from bs4 import BeautifulSoup
 
 
+def get_source_url():
+    unit = 1
+    lesson = 1
+    while True:
+        html = request_webpage(unit, lesson)
+        lesson += 1
+        if not html:
+            lesson = 1
+            unit += 1
+            continue
+        links = process_html(html)
+        processed_links = process_link(links)
+        print(processed_links)
+
+
 def request_webpage(unit, lesson):
     url = f"https://studio.code.org/s/csp{unit}-2023/lessons/{lesson}"
     return askUrl(url)
@@ -25,17 +40,3 @@ def process_link(links):
 
 
 """def download_link(link):"""
-
-if __name__ == '__main__':
-    unit = 1
-    lesson = 1
-    while True:
-        html = request_webpage(unit, lesson)
-        lesson += 1
-        if not html:
-            lesson = 1
-            unit += 1
-            continue
-        links = process_html(html)
-        processed_links = process_link(links)
-        print(processed_links)
