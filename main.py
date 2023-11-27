@@ -3,15 +3,10 @@ import re
 from bs4 import BeautifulSoup
 
 
-Base_URL = f'https://studio.code.org/s/csp1-2023'
-
-
-
 def request_webpage(unit, lesson):
-    unit = 1
-    lesson = 1
     url = f"https://studio.code.org/s/csp{unit}-2023/lessons/{lesson}"
     return askUrl(url)
+
 
 def process_html(html_content):
     try:
@@ -28,13 +23,19 @@ def process_link(links):
                       "docs.google.com" in link or "youtu.be" in link or "youtube.com" in link]
     return filtered_links
 
+
 """def download_link(link):"""
 
-
-
 if __name__ == '__main__':
-    a = request_webpage(1, 1)
-    print(a)
-    b = process_html(a)
-    c = process_link(b)
-    print(c)
+    unit = 1
+    lesson = 1
+    while True:
+        html = request_webpage(unit, lesson)
+        lesson += 1
+        if not html:
+            lesson = 1
+            unit += 1
+            continue
+        links = process_html(html)
+        processed_links = process_link(links)
+        print(processed_links)
