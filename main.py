@@ -39,3 +39,5 @@ if __name__ == '__main__':
         links = process_html(html)
         processed_links = process_link(links)
         print(processed_links)
+        filename = ''
+        directory = f'unit{unit}/lesson{lesson}/{filename}'
