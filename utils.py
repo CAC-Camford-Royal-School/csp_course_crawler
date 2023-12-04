@@ -5,13 +5,14 @@ import os
 
 def download_file(urls, save_path):
     for url in urls:
-        if 'google' in url:
-            response = requests.get(url)
-            save_path += get_filename(url)
-            save_file(response.content, save_path)
-        else:
-            save_path = save_path + url + '.txt'
-            save_file(save_path, save_path)
+        if url:
+            if 'google' in url:
+                response = requests.get(url)
+                save_path += get_filename(url)
+                save_file(response.content, save_path)
+            else:
+                save_path = save_path + url + '.txt'
+                save_file(save_path, save_path)
 
 
 def save_file(content, save_path):

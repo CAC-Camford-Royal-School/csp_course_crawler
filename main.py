@@ -1,5 +1,4 @@
 from spider import *
-import re
 from utils import *
 
 
