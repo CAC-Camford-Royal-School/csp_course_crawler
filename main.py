@@ -1,10 +1,11 @@
 from spider import *
 import re
+from utils import *
 
 
 def get_source_url():
     unit = 1
-    lesson = 1
+    lesson = 0
     while True:
         html = request_webpage(unit, lesson)
         lesson += 1
@@ -14,12 +15,13 @@ def get_source_url():
             continue
         links = process_html(html)
         processed_links = process_link(links)
-        print(processed_links)
+        directory = f'unit{unit}/lesson{lesson}/'
+        download_file(processed_links, directory)
 
 
 def request_webpage(unit, lesson):
     url = f"https://studio.code.org/s/csp{unit}-2023/lessons/{lesson}"
-    return askUrl(url)
+    return ask_url(url)
 
 
 def process_html(html_content):
@@ -38,6 +40,7 @@ def process_link(links):
     processed_links = [link_download(link) for link in filtered_links]
     return processed_links
 
+
 def link_download(link):
     pattern = r"https://docs\.google\.com/([a-zA-Z0-9/_-]+?)/edit"
 
@@ -52,8 +55,6 @@ def link_download(link):
             return None
     else:
         return link
-
-
 
 
 if __name__ == '__main__':

@@ -1,8 +1,7 @@
-import requests
-import datetime
+import urllib.error
+import urllib.request
+
 from fake_useragent import UserAgent
-import urllib.request,urllib.error
-import re
 
 
 def get_random_user_agent():
@@ -11,20 +10,20 @@ def get_random_user_agent():
     return user_agent.random
 
 
-def askUrl(url):
+def ask_url(url):
     """return HTML"""
     head = {
-        "User-Agent" : get_random_user_agent()
+        "User-Agent": get_random_user_agent()
     }
-    request = urllib.request.Request(url,headers=head)
+    request = urllib.request.Request(url, headers=head)
     html = ""
     try:
         response = urllib.request.urlopen(request)
         html = response.read().decode("utf-8")
         # print(html)
     except urllib.error.URLError as error:
-        if hasattr(error,"code"):
+        if hasattr(error, "code"):
             print(error.code)
-        if hasattr(error,"reason"):
+        if hasattr(error, "reason"):
             print(error.reason)
     return html
