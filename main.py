@@ -1,6 +1,20 @@
 from spider import *
 import re
-from bs4 import BeautifulSoup
+
+
+def get_source_url():
+    unit = 1
+    lesson = 1
+    while True:
+        html = request_webpage(unit, lesson)
+        lesson += 1
+        if not html:
+            lesson = 1
+            unit += 1
+            continue
+        links = process_html(html)
+        processed_links = process_link(links)
+        print(processed_links)
 
 
 def request_webpage(unit, lesson):
@@ -21,21 +35,26 @@ def process_html(html_content):
 def process_link(links):
     filtered_links = [link for link in links if
                       "docs.google.com" in link or "youtu.be" in link or "youtube.com" in link]
-    return filtered_links
+    processed_links = [link_download(link) for link in filtered_links]
+    return processed_links
+
+def link_download(link):
+    pattern = r"https://docs\.google\.com/([a-zA-Z0-9/_-]+?)/edit"
+
+    if "docs.google.com" in link:
+        match = re.search(pattern, link)
+        # Check if the match object is not None and has a group to extract
+        if match and match.groups():
+            extracted_content = match.group(1)
+            return f"https://docs.google.com/{extracted_content}/export?format=pdf"
+        else:
+            # If no match is found, return nothing
+            return None
+    else:
+        return link
 
 
-"""def download_link(link):"""
+
 
 if __name__ == '__main__':
-    unit = 1
-    lesson = 1
-    while True:
-        html = request_webpage(unit, lesson)
-        lesson += 1
-        if not html:
-            lesson = 1
-            unit += 1
-            continue
-        links = process_html(html)
-        processed_links = process_link(links)
-        print(processed_links)
+    get_source_url()
