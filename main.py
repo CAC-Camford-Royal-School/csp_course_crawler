@@ -4,18 +4,18 @@ from utils import *
 
 def get_source_url():
     unit = 1
-    lesson = 0
-    while True:
+    lesson = 1
+    while unit < 12:
         html = request_webpage(unit, lesson)
-        lesson += 1
         if not html:
             lesson = 1
             unit += 1
             continue
         links = process_html(html)
         processed_links = process_link(links)
-        directory = f'unit{unit}/lesson{lesson}/'
+        directory = f'files/unit{unit}/lesson{lesson}/'
         download_file(processed_links, directory)
+        lesson += 1
 
 
 def request_webpage(unit, lesson):

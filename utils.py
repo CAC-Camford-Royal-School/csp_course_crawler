@@ -8,11 +8,11 @@ def download_file(urls, save_path):
         if url:
             if 'google' in url:
                 response = requests.get(url)
-                save_path += get_filename(url)
-                save_file(response.content, save_path)
+                path = save_path + get_filename(url) + '.pdf'
+                save_file(response.content, path)
             else:
-                save_path = save_path + url + '.txt'
-                save_file(save_path, save_path)
+                path = save_path + url[-5:] + '.txt'
+                save_file(bytes(url, encoding='utf-8'), path)
 
 
 def save_file(content, save_path):
@@ -34,7 +34,7 @@ def get_filename(url):
             return match.group(1)
 
     # 如果 Content-Disposition 中没有文件名，使用 URL 中的路径部分
-    return url.split('/')[5]
+    return url.split('/')[5][-5:]
 
 
 if __name__ == "__main__":
